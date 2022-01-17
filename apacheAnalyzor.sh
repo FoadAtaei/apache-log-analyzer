@@ -34,11 +34,20 @@ function showTopBrowsers {
 
 #Function 4: Show which addresses are the most referenced in order.
 #For convenience, we use the awk to separate all the references and then display a list of the top 10 for instance.
-#To store information, the list of these Browsers will be saved in the topRefrences.txt file.
+#To store information, the list of these Refrences will be saved in the topRefrences.txt file.
 function showTopRefrences {
-    cat $log | awk -F\" '{ print $4 }'| grep -v '-'| wc | awk '{print "All of refrences : " $1}'
+    cat $log | awk -F\" '{ print $4 }'| grep -v '-'| wc | awk '{print "All of Refrences : " $1}'
     echo Top 10 Refrences:
     cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10
     cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10 > topRefrences.txt
 }
+
+#Function 5: Show which operating system has been visited the most.
+#To store information, the list of these OS will be saved in the topOS.txt file.
+function showTopOS {
+    echo Top 10 Opeation System:
+    awk '{count[$13]++} END {for (os in count) print os, count[os]}' $log | sort -k 2nr | head -n 10
+    awk '{count[$13]++} END {for (os in count) print os, count[os]}' $log | sort -k 2nr | head -n 10 > topOS.txt
+}
+
 
