@@ -27,9 +27,18 @@ function showTenTopIPs {
 #Function 3: Show which browsers are the most visited.
 #To store information, the list of these Browsers will be saved in the topBrowsers.txt file.
 function showTopBrowsers {
-    echo Top 10 Popular Browsers:
+    echo Top 10 Browsers:
     cat $log | awk '{count[$(NF)]++} END {for (browser in count) print browser, count[browser]}' | sort -k 2nr | head -n 10
     cat $log | awk '{count[$(NF)]++} END {for (browser in count) print browser, count[browser]}' | sort -k 2nr | head -n 10 > topBrowsers.txt
 }
 
+#Function 4: Show which addresses are the most referenced in order.
+#For convenience, we use the awk to separate all the references and then display a list of the top 10 for instance.
+#To store information, the list of these Browsers will be saved in the topRefrences.txt file.
+function showTopRefrences {
+    cat $log | awk -F\" '{ print $4 }'| grep -v '-'| wc | awk '{print "All of refrences : " $1}'
+    echo Top 10 Refrences:
+    cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10
+    cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10 > topRefrences.txt
+}
 
