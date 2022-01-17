@@ -7,10 +7,10 @@
 clear
 #The definition of functions and how they work are stated in order.
 
-#Function 1: Show the number of hits of a particular url
+#Function 1: Show the number of hits of a particular url.
 function countOfParticularURL {
     echo Count of Particular URL:
-	cat $log | awk '{ print $1 }'  |  sort | uniq | wc -l
+	  cat $log | awk '{ print $1 }'  |  sort | uniq | wc -l
 }
 
 #Function 2: Show the 10 most visited IPs in order.
@@ -23,4 +23,13 @@ function showTenTopIPs {
     awk '{print count "times {" $1 "} IP is repeated."}' $log | sort | uniq -c  | sort -nr | head -n 10
     awk '{print count "times {" $1 "} IP is repeated."}' $log | sort | uniq -c  | sort -nr | head -n 10 > mostIPs.txt
 }
+
+#Function 3: Show which browsers are the most visited.
+#To store information, the list of these Browsers will be saved in the topBrowsers.txt file.
+function showTopBrowsers {
+    echo Top 10 Popular Browsers:
+    cat $log | awk '{count[$(NF)]++} END {for (browser in count) print browser, count[browser]}' | sort -k 2nr | head -n 10
+    cat $log | awk '{count[$(NF)]++} END {for (browser in count) print browser, count[browser]}' | sort -k 2nr | head -n 10 > topBrowsers.txt
+}
+
 
