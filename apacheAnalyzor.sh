@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Author: SeyedFoadAtaei, SSN: 9821833, Date: 1/17/2022
+#Author: SeyedFoadAtaei, SSN: 9821833, Start: 1/17/2022, Finish:
 #Project is a bash script that analyzes an Apache log file.
 #Various queries are defined so that the user can retrieve information from the relevant file.
 
@@ -49,5 +49,14 @@ function showTopOS {
     awk '{count[$13]++} END {for (os in count) print os, count[os]}' $log | sort -k 2nr | head -n 10
     awk '{count[$13]++} END {for (os in count) print os, count[os]}' $log | sort -k 2nr | head -n 10 > topOS.txt
 }
+
+#Function 6: Show which URLs are the most visited.
+#Show the top 10 items and To store information, the list of these URLs will be saved in the mostURLs.txt file.
+function showTenTopURLs {
+    echo Top 10 URLs:
+    awk '{count[$7]++} END {for (url in count) print url, count[url]}' $log | sort -k 2nr | head -n 10
+    awk '{count[$7]++} END {for (url in count) print url, count[url]}' $log | sort -k 2nr | head -n 10 > mostURLs.txt
+}
+
 
 
