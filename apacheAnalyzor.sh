@@ -58,7 +58,7 @@ function showTopTenURLs {
     awk '{count[$7]++} END {for (url in count) print url, count[url]}' $log | sort -k 2nr | head -n 10 > mostURLs.txt
 }
 
-#Function 7: Show all IPs and count them
+#Function 7: Show all IPs and count them.
 #Using awk, we take the first data of each row, which is the same as the IPs, and display it with the number of non-duplicate IPs.
 #To store information, the list of these IPs will be saved in the IPs.txt file.
 function showAllIPs {
@@ -68,7 +68,7 @@ function showAllIPs {
     cat $log | awk '{ print $1}' | uniq > IPs.txt
 }
 
-#Function 8: Show top 10 users with most visit
+#Function 8: Show top 10 users with most visit.
 #The sixth variable in each row contains the names of the users who visited. As a result, the top 10 can be found with a few simple commands.
 #To store information, the list of these users will be saved in the topUsers.txt file.
 function showTopTenUsers {
@@ -77,3 +77,11 @@ function showTopTenUsers {
 	  cat $log | awk -F\" '{ print count $6 }' | sort | uniq -c | sort -nr | head -n 10 > TopUsers.txt
 }
 
+#Function 9: Show requests type.
+#Determining the type of each request is very important because it provides us with good information, awk easily sorts and returns these requests.
+#To store information, the list of these types will be saved in the requestsType.txt file.
+function showRequestsType {
+    cat $log | awk '{ print $6}'  | wc | awk '{print $1 " Requests :" }'
+    cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r
+    cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r > requestsType.txt
+}
