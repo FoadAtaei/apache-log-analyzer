@@ -85,3 +85,14 @@ function showRequestsType {
     cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r
     cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r > requestsType.txt
 }
+
+#Function 10: Show the day of each request.
+#The important point in defining this function is that in displaying the specifications, the date and time are shown together, So we have to separate them first with the help of awk.
+#To store information, the list of these days will be saved in the days.txt file.
+function showDays {
+    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -d: -f1 | uniq -c  | wc | awk '{print $1 " Days :" }'
+    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr
+    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr > days.txt
+}
+
+
