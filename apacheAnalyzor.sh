@@ -95,4 +95,48 @@ function showDays {
     awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr > days.txt
 }
 
+#Main function
+function main {
+  echo Welcome to the "$log" file analyzer
+  while true
+  do
+    echo    "Apache Log File Analyzer           "
+    echo
+    echo -e "       Please select a query       "
+    echo
+    echo    "1: Show count of particular URL    "
+    echo
+    echo    "2: Show top 10 IPs                 "
+    echo
+    echo    "3: Show top Browsers               "
+    echo
+    echo    "4: Show top Refrences              "
+    echo
+    echo    "5: Show top Operating System       "
+    echo
+    echo    "6: Show top 10 URLs                "
+    echo
+    echo    "7: Show all IPs                    "
+    echo
+    echo    "8: Show top 10 Users               "
+    echo
+    echo    "9: Show Type of Request            "
+    echo
+    echo    "10: Show Days of Request           "
+    read -p "Your selection: " query
+    case $query in
+    1) countOfParticularURL;;
+    2) showTopTenIPs;;
+    3) showTopBrowsers;;
+    4) showTopRefrences;;
+    5) showTopOS;;
+    6) showTopTenURLs;;
+    7) showAllIPs;;
+    8) showTopTenUsers;;
+    9) showRequestsType;;
+    10) showDays;;
+    *) echo Sorry, The request of your choice is not available.;;
+    esac
+  done
+}
 
