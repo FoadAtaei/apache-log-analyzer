@@ -16,7 +16,7 @@ function countOfParticularURL {
 #Function 2: Show the 10 most visited IPs in order.
 #First we count the non-duplicate IPs and then we display the top ten IPs in order.
 #To store information, the list of these IPs will be saved in the mostIPs.txt file.
-function showTenTopIPs {
+function showTopTenIPs {
     cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done" }'
     cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All of IPs : " $1}'
     echo Top 10 IPs:
@@ -52,7 +52,7 @@ function showTopOS {
 
 #Function 6: Show which URLs are the most visited.
 #Show the top 10 items and To store information, the list of these URLs will be saved in the mostURLs.txt file.
-function showTenTopURLs {
+function showTopTenURLs {
     echo Top 10 URLs:
     awk '{count[$7]++} END {for (url in count) print url, count[url]}' $log | sort -k 2nr | head -n 10
     awk '{count[$7]++} END {for (url in count) print url, count[url]}' $log | sort -k 2nr | head -n 10 > mostURLs.txt
@@ -60,7 +60,7 @@ function showTenTopURLs {
 
 #Function 7: Show all IPs and count them
 #Using awk, we take the first data of each row, which is the same as the IPs, and display it with the number of non-duplicate IPs.
-#To store information, the list of these OS will be saved in the IPs.txt file.
+#To store information, the list of these IPs will be saved in the IPs.txt file.
 function showAllIPs {
     cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done" }'
     cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All of IPs : " $1}'
@@ -68,4 +68,12 @@ function showAllIPs {
     cat $log | awk '{ print $1}' | uniq > IPs.txt
 }
 
+#Function 8: Show top 10 users with most visit
+#The sixth variable in each row contains the names of the users who visited. As a result, the top 10 can be found with a few simple commands.
+#To store information, the list of these users will be saved in the topUsers.txt file.
+function showTopTenUsers {
+    echo Top 10 Users:
+	  cat $log | awk -F\" '{ print count $6 }' | sort | uniq -c | sort -nr | head -n 10
+	  cat $log | awk -F\" '{ print count $6 }' | sort | uniq -c | sort -nr | head -n 10 > TopUsers.txt
+}
 
