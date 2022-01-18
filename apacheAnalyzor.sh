@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Author: SeyedFoadAtaei, SSN: 9821833, Start: 1/17/2022, Finish:
+#Author: SeyedFoadAtaei, SSN: 9821833, Start: 1/17/2022, Finish: 1/18/2022
 #Project is a bash script that analyzes an Apache log file.
 #Various queries are defined so that the user can retrieve information from the relevant file.
 
@@ -100,7 +100,7 @@ function main {
   echo Welcome to the "$log" file analyzer
   while true
   do
-    echo    "Apache Log File Analyzer           "
+    echo    "Apache Log File Analyzer           "             #Definition of functions for users
     echo
     echo -e "       Please select a query       "
     echo
@@ -140,3 +140,18 @@ function main {
   done
 }
 
+#Take the file and then perform the necessary operations in order.
+function readFile {
+  echo -e "Please Enter the input file:\n"
+  ls -p | grep -w log
+  echo
+  log="apacheLog.log"
+  if [ ! -f $log ]; then                                          #Send a message when file is not found
+    echo -e "\nSorry, File not found!\n"
+    readFile
+  else
+    main
+  fi
+  }
+  echo -e "\nApache log file analyzer\n"
+  readFile
