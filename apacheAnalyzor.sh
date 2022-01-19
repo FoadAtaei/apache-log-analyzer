@@ -1,16 +1,18 @@
 #!/bin/bash
 
-#Author: SeyedFoadAtaei, SSN: 9821833, Start: 1/17/2022, Finish: 1/18/2022
+#Author: SeyedFoadAtaei, SSN: 9821833, Start: 1/17/2022, Finish: 1/20/2022
 #Project is a bash script that analyzes an Apache log file.
 #Various queries are defined so that the user can retrieve information from the relevant file.
 
 clear
 #The definition of functions and how they work are stated in order.
 
-#Function 1: Show the number of hits of a particular url.
+#Function 1: Show the number of hits of a particular URL.
+#To store information, the number of these URLs will be saved in the particularURL.txt file.
 function countOfParticularURL {
     echo Count of Particular URL:
 	  cat $log | awk '{ print $1 }'  |  sort | uniq | wc -l
+	  cat $log | awk '{ print $1 }'  |  sort | uniq | wc -l > particularURL.txt
 }
 
 #Function 2: Show the 10 most visited IPs in order.
@@ -41,7 +43,7 @@ function showTopRefrences {
 }
 
 #Function 5: Show which operating system has been visited the most.
-#To store information, the list of these OS will be saved in the topOS.txt file.
+#To store information, the list of these operation system will be saved in the topOS.txt file.
 function showTopOS {
     echo Top 10 Opeation System:
     awk '{count[$13]++} END {for (os in count) print os, count[os]}' $log | sort -k 2nr | head -n 10
@@ -62,7 +64,7 @@ function showTopTenURLs {
 function showAllIPs {
     cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done." }'
     cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All IPs : " $1}'
-    cat $log | awk '{ print count "times {" $1 "} IP is visited."}' | sort -r | uniq -c | sort -r
+    cat $log | awk '{ print count "times " $1 " IP is visited."}' | sort -r | uniq -c | sort -r
     cat $log | awk '{ print $1}' | uniq > IPs.txt
 }
 
@@ -95,7 +97,7 @@ function showDays {
 
 #Main function
 function main {
-  echo Welcome to the "$log" file analyzer
+  echo Hi, Welcome to the "$log" file analyzer
   while true
   do
     echo
@@ -117,11 +119,12 @@ function main {
     echo
     echo    "8: Show top 10 Users               "
     echo
-    echo    "9: Show Type of Request            "
+    echo    "9: Show Type of Requests            "
     echo
-    echo    "10: Show Days of Request           "
+    echo    "10: Show Days of Requests           "
     echo
     read -p "Your selection: " query
+    echo
     case $query in
     1) countOfParticularURL;;
     2) showTopTenIPs;;
