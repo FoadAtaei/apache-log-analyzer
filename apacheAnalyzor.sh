@@ -17,11 +17,10 @@ function countOfParticularURL {
 #First we count the non-duplicate IPs and then we display the top ten IPs in order.
 #To store information, the list of these IPs will be saved in the mostIPs.txt file.
 function showTopTenIPs {
-    cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done" }'
-    cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All of IPs : " $1}'
+    cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done." }'
     echo Top 10 IPs:
-    awk '{print count "times {" $1 "} IP is repeated."}' $log | sort | uniq -c  | sort -nr | head -n 10
-    awk '{print count "times {" $1 "} IP is repeated."}' $log | sort | uniq -c  | sort -nr | head -n 10 > mostIPs.txt
+    awk '{print count "times " $1 " IP is visited."}' $log | sort | uniq -c  | sort -nr | head -n 10
+    awk '{print count "times " $1 " IP is visited."}' $log | sort | uniq -c  | sort -nr | head -n 10 > mostIPs.txt
 }
 
 #Function 3: Show which browsers are the most visited.
@@ -36,7 +35,6 @@ function showTopBrowsers {
 #For convenience, we use the awk to separate all the references and then display a list of the top 10 for instance.
 #To store information, the list of these Refrences will be saved in the topRefrences.txt file.
 function showTopRefrences {
-    cat $log | awk -F\" '{ print $4 }'| grep -v '-'| wc | awk '{print "All of Refrences : " $1}'
     echo Top 10 Refrences:
     cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10
     cat $log | awk -F\" '{ print  $4 }'| grep -v '-'| sort | uniq -c | sort -nr | head -n 10 > topRefrences.txt
@@ -62,9 +60,9 @@ function showTopTenURLs {
 #Using awk, we take the first data of each row, which is the same as the IPs, and display it with the number of non-duplicate IPs.
 #To store information, the list of these IPs will be saved in the IPs.txt file.
 function showAllIPs {
-    cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done" }'
-    cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All of IPs : " $1}'
-    cat $log | awk '{ print count "times {" $1 "} IP is repeated."}' | sort -r | uniq -c | sort -r
+    cat $log | awk '{ print $1}' | sort | uniq | wc | awk '{print $1 " Finding non-duplicate IPs is done." }'
+    cat $log | awk -F\" '{ print $1 }'| wc | awk '{print "All IPs : " $1}'
+    cat $log | awk '{ print count "times {" $1 "} IP is visited."}' | sort -r | uniq -c | sort -r
     cat $log | awk '{ print $1}' | uniq > IPs.txt
 }
 
@@ -82,17 +80,17 @@ function showTopTenUsers {
 #To store information, the list of these types will be saved in the requestsType.txt file.
 function showRequestsType {
     cat $log | awk '{ print $6}'  | wc | awk '{print $1 " Requests :" }'
-    cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r
-    cat $log | awk '{ print count "times {" $6 "} Request is repeated."}' | sort -r | uniq -c | sort -r > requestsType.txt
+    cat $log | awk '{ print count "times " $6 " Request is visited."}' | sort -r | uniq -c | sort -r
+    cat $log | awk '{ print count "times " $6 " Request is visited."}' | sort -r | uniq -c | sort -r > requestsType.txt
 }
 
 #Function 10: Show the day of each request.
 #The important point in defining this function is that in displaying the specifications, the date and time are shown together, So we have to separate them first with the help of awk.
 #To store information, the list of these days will be saved in the days.txt file.
 function showDays {
-    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -d: -f1 | uniq -c  | wc | awk '{print $1 " Days :" }'
-    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr
-    awk '{print count "times {" $4 "} Day is repeated."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr > days.txt
+    awk '{print count "times " $4 " Day is visited."}' $log | cut -d: -f1 | uniq -c  | wc | awk '{print $1 " Days :" }'
+    awk '{print count "times " $4 " Day is visited."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr
+    awk '{print count "times " $4 " Day is visited."}' $log | cut -b 1-6,9-19 | sort | uniq -c  | sort -nr > days.txt
 }
 
 #Main function
@@ -100,9 +98,8 @@ function main {
   echo Welcome to the "$log" file analyzer
   while true
   do
-    echo    "Apache Log File Analyzer           "             #Definition of functions for users
     echo
-    echo -e "       Please select a query       "
+    echo -e "Please select a query              "                  #Definition of functions for users
     echo
     echo    "1: Show count of particular URL    "
     echo
@@ -123,6 +120,7 @@ function main {
     echo    "9: Show Type of Request            "
     echo
     echo    "10: Show Days of Request           "
+    echo
     read -p "Your selection: " query
     case $query in
     1) countOfParticularURL;;
@@ -147,6 +145,7 @@ function readFile {
   echo
   log="apacheLog.log"
   if [ ! -f $log ]; then                                          #Send a message when file is not found
+    echo
     echo -e "\nSorry, File not found!\n"
     readFile
   else
